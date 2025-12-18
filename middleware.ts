@@ -6,9 +6,12 @@ export async function middleware(request: NextRequest) {
     request,
   })
 
+  const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || 'https://example.com'
+  const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || 'example-key'
+
   const supabase = createServerClient(
-    process.env.NEXT_PUBLIC_SUPABASE_URL || 'https://example.com',
-    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || 'example-key',
+    supabaseUrl,
+    supabaseKey,
     {
       cookies: {
         getAll() {
