@@ -7,8 +7,7 @@ const inter = Inter({ subsets: ["latin"] })
 
 export const metadata: Metadata = {
   title: "AI Twin Sync - Your AI Chief of Staff",
-  description: "Atlas manages your emails, calendar, calls, and tasks so 
-you can focus on what matters.",
+  description: "Atlas manages your emails, calendar, calls, and tasks so you can focus on what matters.",
 }
 
 export default function RootLayout({
