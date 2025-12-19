@@ -25,12 +25,8 @@ export default function ChatPage() {
   const [streamingContent, setStreamingContent] = useState("")
   const messagesEndRef = useRef<HTMLDivElement>(null)
 
-  const scrollToBottom = () => {
-    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" })
-  }
-
   useEffect(() => {
-    scrollToBottom()
+    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" })
   }, [messages, streamingContent])
 
   const handleSend = async () => {
@@ -83,6 +79,7 @@ export default function ChatPage() {
       }])
       setStreamingContent("")
 
+
     } catch (error) {
       console.error("Chat error:", error)
       setMessages((prev) => [...prev, {
@@ -93,13 +90,6 @@ export default function ChatPage() {
       }])
     } finally {
       setIsLoading(false)
-    }
-  }
-
-  const handleKeyDown = (e: React.KeyboardEvent) => {
-    if (e.key === "Enter" && !e.shiftKey) {
-      e.preventDefault()
-      handleSend()
     }
   }
 
@@ -159,7 +149,15 @@ export default function ChatPage() {
           <button onClick={() => setIsListening(!isListening)} className={`p-3 rounded-xl transition ${isListening ? "bg-red-500 text-white" : "bg-gray-800 text-gray-400 hover:text-white"}`}>
             {isListening ? <MicOff className="w-5 h-5" /> : <Mic className="w-5 h-5" />}
           </button>
-          <input type="text" value={input} onChange={(e) => setInput(e.target.value)} onKeyDown={handleKeyDown} placeholder="Ask Atlas anything..." disabled={isLoading} className="flex-1 bg-gray-800 border border-gray-700 rounded-xl px-4 py-3 text-white placeholder:text-gray-500 focus:outline-none focus:border-blue-500 transition disabled:opacity-50" />
+          <input
+            type="text"
+            value={input}
+            onChange={(e) => setInput(e.target.value)}
+            onKeyDown={(e) => e.key === "Enter" && !e.shiftKey && (e.preventDefault(), handleSend())}
+            placeholder="Ask Atlas anything..."
+            disabled={isLoading}
+            className="flex-1 bg-gray-800 border border-gray-700 rounded-xl px-4 py-3 text-white placeholder:text-gray-500 focus:outline-none focus:border-blue-500 transition disabled:opacity-50"
+          />
           <button onClick={handleSend} disabled={!input.trim() || isLoading} className="bg-gradient-to-r from-blue-500 to-purple-600 text-white p-3 rounded-xl hover:opacity-90 transition disabled:opacity-50">
             {isLoading ? <Loader2 className="w-5 h-5 animate-spin" /> : <Send className="w-5 h-5" />}
           </button>
